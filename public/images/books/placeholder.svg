@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="960" viewBox="0 0 640 960">
+  <defs>
+    <linearGradient id="cover" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#10B981"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="960" rx="32" fill="url(#cover)"/>
+  <text x="50%" y="45%" fill="#F1F5F9" font-family="Merriweather, serif" font-size="56" font-weight="700" text-anchor="middle">
+    Mana Influx
+  </text>
+  <text x="50%" y="55%" fill="#EAB308" font-family="Inter, sans-serif" font-size="28" font-weight="600" text-anchor="middle">
+    Cover coming soon
+  </text>
+</svg>

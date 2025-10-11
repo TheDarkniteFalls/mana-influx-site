@@ -1,0 +1,97 @@
+---
+import BookCard from "../../components/BookCard.astro";
+import NewsletterForm from "../../components/NewsletterForm.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { loadBooks, loadSeries } from "../../utils/content";
+
+const books = await loadBooks();
+const seriesMap = await loadSeries();
+const manaSeries = seriesMap["mana-influx"];
+
+const availableFormats = Array.from(
+  new Set(
+    books
+      .map((book) => book.data.formats ?? [])
+      .flat()
+      .map((format) => format.toUpperCase()),
+  ),
+).sort();
+---
+
+<BaseLayout title="Books">
+  <section class="space-y-4">
+    <h1 class="text-3xl font-serif font-semibold text-slate-900 dark:text-slate-100">
+      Books by Mike Parsons
+    </h1>
+    <p class="max-w-3xl text-sm text-slate-600 dark:text-slate-300">
+      Browse the Mana Influx reading order, omnibus editions, and audio releases. Use the filters to focus on the formats you prefer.
+      Each title includes strong Kindle Unlimited and Amazon calls to action, with Goodreads and Audible links where available.
+    </p>
+  </section>
+
+  <section class="flex flex-wrap items-center gap-3 rounded-2xl border border-slate-900/10 bg-white/80 p-4 text-sm dark:border-slate-100/10 dark:bg-slate-900/60">
+    <span class="font-semibold text-slate-700 dark:text-slate-200">Filter by format:</span>
+    <button
+      class="filter-button inline-flex items-center rounded-full bg-emerald-500 px-4 py-2 font-semibold text-white shadow-sm transition hover:bg-emerald-400"
+      data-filter="all"
+      type="button"
+    >
+      All
+    </button>
+    {availableFormats.map((format) => (
+      <button
+        class="filter-button inline-flex items-center rounded-full border border-slate-900/10 px-4 py-2 font-semibold text-slate-700 transition hover:border-emerald-400 hover:text-emerald-600 dark:border-slate-100/20 dark:text-slate-200"
+        data-filter={format.toLowerCase()}
+        type="button"
+      >
+        {format}
+      </button>
+    ))}
+  </section>
+
+  <section class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" id="book-grid">
+    {books.map((book) => (
+      <div class="book-card" data-formats={book.data.formats.join(",")}>
+        <BookCard book={book} showExcerpt />
+      </div>
+    ))}
+  </section>
+
+  {manaSeries && (
+    <section class="mt-10">
+      <NewsletterForm
+        heading="Stay current with Mana Influx"
+        description="Receive launch alerts, release-week extras, and bonus scenes when new arcs go live."
+      />
+    </section>
+  )}
+</BaseLayout>
+
+<script is:inline>
+  const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>(".filter-button"));
+  const cards = Array.from(document.querySelectorAll<HTMLDivElement>("#book-grid .book-card"));
+
+  const setActive = (target) => {
+    buttons.forEach((btn) => {
+      const isActive = btn === target;
+      btn.classList.toggle("bg-emerald-500", isActive);
+      btn.classList.toggle("text-white", isActive);
+      btn.classList.toggle("border-slate-900/10", !isActive);
+      btn.classList.toggle("border-emerald-400", isActive);
+      btn.classList.toggle("text-slate-700", !isActive);
+    });
+  };
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const filter = button.dataset.filter ?? "all";
+      setActive(button);
+
+      cards.forEach((card) => {
+        const formats = (card.dataset.formats ?? "").toLowerCase();
+        const matches = filter === "all" || formats.includes(filter);
+        card.style.display = matches ? "" : "none";
+      });
+    });
+  });
+</script>

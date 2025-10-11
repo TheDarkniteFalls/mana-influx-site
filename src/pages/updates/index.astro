@@ -1,0 +1,50 @@
+
+---
+import NewsletterForm from "../../components/NewsletterForm.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { loadUpdates } from "../../utils/content";
+import { formatDate } from "../../utils/format";
+
+const updates = await loadUpdates();
+---
+
+<BaseLayout title="Updates">
+  <section class="space-y-4">
+    <h1 class="text-3xl font-serif font-semibold text-slate-900 dark:text-slate-100">
+      Mana Influx updates
+    </h1>
+    <p class="max-w-3xl text-sm text-slate-600 dark:text-slate-300">
+      Release notes, Royal Road chapter announcements, newsletter extras, and production milestones.
+      Subscribe to the mailing list to hear about Kindle Unlimited launches and audiobook drops first.
+    </p>
+  </section>
+
+  <section class="mt-8 grid gap-6 lg:grid-cols-2">
+    {updates.map((post) => (
+      <article class="flex flex-col gap-4 rounded-3xl border border-slate-900/10 bg-white/90 p-6 shadow-sm transition hover:border-emerald-400 hover:shadow-lg dark:border-slate-100/20 dark:bg-slate-900/60">
+        <p class="text-xs font-semibold uppercase tracking-wide text-emerald-500">
+          {formatDate(post.data.date)}
+        </p>
+        <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100">
+          <a href={`/updates/${post.slug}`}>{post.data.title}</a>
+        </h2>
+        <p class="text-sm text-slate-600 dark:text-slate-300">
+          {post.data.excerpt ?? `${post.body.substring(0, 160).trim()}…`}
+        </p>
+        <a
+          href={`/updates/${post.slug}`}
+          class="inline-flex items-center text-sm font-semibold text-emerald-600 transition hover:text-emerald-500 dark:text-emerald-300"
+        >
+          Read more →
+        </a>
+      </article>
+    ))}
+  </section>
+
+  <section class="mt-12">
+    <NewsletterForm
+      heading="Get update alerts"
+      description="Inboxes receive the full post plus behind-the-scenes notes before they hit the site."
+    />
+  </section>
+</BaseLayout>

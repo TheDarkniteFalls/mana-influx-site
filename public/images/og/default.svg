@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <g fill="#10B981">
+    <circle cx="150" cy="520" r="160" opacity="0.2"/>
+    <circle cx="1050" cy="120" r="140" opacity="0.2"/>
+    <path d="M280 180 h640 v50 H280z" opacity="0.3"/>
+  </g>
+  <text x="80" y="220" font-family="Merriweather, serif" font-size="64" fill="#EAB308">
+    Mana Influx
+  </text>
+  <text x="80" y="300" font-family="Inter, sans-serif" font-size="44" fill="#F1F5F9">
+    LitRPG Progression Fantasy by Mike Parsons
+  </text>
+  <text x="80" y="380" font-family="Inter, sans-serif" font-size="28" fill="#F1F5F9" opacity="0.85">
+    Explore the series, Kindle Unlimited releases, and Royal Road updates.
+  </text>
+</svg>

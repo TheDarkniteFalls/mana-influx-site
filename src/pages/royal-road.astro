@@ -1,0 +1,86 @@
+---
+import NewsletterForm from "../components/NewsletterForm.astro";
+import ReviewQuote from "../components/ReviewQuote.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { loadSeries } from "../utils/content";
+
+const seriesMap = await loadSeries();
+const royalRoad = seriesMap["royal-road"] ?? null;
+---
+
+<BaseLayout title="Royal Road">
+  <section class="space-y-6">
+    <span class="inline-flex items-center rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-200">
+      Royal Road serial &bull; Kiwi Parsons
+    </span>
+    <h1 class="text-3xl font-serif font-semibold text-slate-900 dark:text-slate-100">
+      {royalRoad?.data.title ?? "The Mana Influx"}
+    </h1>
+    <p class="text-lg leading-relaxed text-slate-700 dark:text-slate-300">
+      {royalRoad?.data.description ?? "Royal Road hosts live chapters, reader polls, and author commentary for upcoming Mana Influx arcs."}
+    </p>
+    <div class="grid gap-8 lg:grid-cols-[1.2fr_1fr] lg:items-start">
+      <div class="space-y-6">
+        <div class="rounded-3xl border border-emerald-500/20 bg-white/90 p-6 shadow-lg shadow-emerald-500/10 dark:border-emerald-400/20 dark:bg-slate-900/60">
+          <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100">Why read on Royal Road?</h2>
+          <ul class="mt-4 space-y-3 text-sm text-slate-700 dark:text-slate-300">
+            <li>&bull; Weekly chapter drops with comment threads and feedback polls.</li>
+            <li>&bull; Exclusive side quests and bonus scenes tied to active reader events.</li>
+            <li>&bull; Early glimpses of Kindle Unlimited arcs before final edits.</li>
+            {royalRoad?.data.updateSchedule ? (
+            <li>&bull; Update cadence: {royalRoad.data.updateSchedule}</li>
+            ) : null}
+          </ul>
+          <div class="mt-6 flex flex-wrap gap-3">
+            {royalRoad?.data.cta ? (
+              <a
+                href={royalRoad.data.cta.href}
+                class="inline-flex items-center rounded-full bg-emerald-500 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300"
+                rel="noopener noreferrer"
+              >
+                {royalRoad.data.cta.label}
+              </a>
+            ) : null}
+            <a
+              href="/newsletter"
+              class="inline-flex items-center rounded-full border border-slate-900/10 px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-emerald-400 hover:text-emerald-600 dark:border-slate-100/20 dark:text-slate-200"
+            >
+              Newsletter alerts
+            </a>
+          </div>
+        </div>
+        {royalRoad?.data.highlights?.length ? (
+          <section class="space-y-4">
+            <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100">Highlights</h2>
+            <div class="grid gap-4 md:grid-cols-2">
+              {royalRoad.data.highlights.map((highlight) => (
+                <div class="rounded-2xl border border-slate-900/10 bg-white/80 p-4 text-sm text-slate-700 shadow-sm dark:border-slate-100/10 dark:bg-slate-900/60 dark:text-slate-300">
+                  {highlight}
+                </div>
+              ))}
+            </div>
+          </section>
+        ) : null}
+      </div>
+      <aside class="space-y-6">
+        <div class="overflow-hidden rounded-3xl border border-emerald-500/30 bg-white shadow-lg dark:border-emerald-400/30 dark:bg-slate-900">
+          <img
+            src={royalRoad?.data.cover ?? "/images/books/placeholder.svg"}
+            alt={`${royalRoad?.data.title ?? "The Mana Influx"} cover art`}
+            class="h-full w-full object-cover"
+          />
+        </div>
+        <ReviewQuote
+          quote="Royal Road readers helped shape Mana Influx from chapter one. The comment threads keep me honest and fuel the next arc."
+          source="Mike Parsons"
+          attribution="Author"
+        />
+        <NewsletterForm
+          heading="Get serial updates"
+          description="Receive reminder emails when new arcs or stub replacements go live on Royal Road."
+        />
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+

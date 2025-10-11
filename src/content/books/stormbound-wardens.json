@@ -1,0 +1,15 @@
+{
+  "series": "mana-influx",
+  "seriesOrder": 2,
+  "title": "Stormbound Wardens",
+  "subtitle": "Mana Influx Book Two (Placeholder)",
+  "blurb": "Placeholder entry for the second Mana Influx novel. Update this file with the official blurb, metadata, and links after running the fetch script or supplying final copy.",
+  "amazonUrl": null,
+  "kindleUnlimited": true,
+  "formats": [
+    "ebook"
+  ],
+  "cover": "/images/books/placeholder.svg",
+  "contentWarnings": [],
+  "reviews": []
+}

@@ -1,0 +1,48 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  url?: string;
+  type?: "website" | "article" | "book";
+  noIndex?: boolean;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const {
+  title,
+  description = "Explore the Mana Influx LitRPG series by Mike Parsons (pen name Kiwi Parsons). Discover reading order guides, Royal Road chapters, and Kindle Unlimited releases.",
+  image = "/images/og/default.svg",
+  url,
+  noIndex,
+  jsonLd,
+  type = "website",
+} = Astro.props;
+
+const siteTitle = "Mike Parsons | Mana Influx";
+const pageTitle = title ? `${title} | Mike Parsons` : siteTitle;
+const canonical = url ?? Astro.url?.toString() ?? Astro.site?.href ?? "";
+const siteUrl = Astro.site?.href ?? "https://mparsonsauthor.com";
+---
+
+<title>{pageTitle}</title>
+<meta name="description" content={description} />
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content="Mike Parsons" />
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={image.startsWith("http") ? image : `${siteUrl}${image}`} />
+<meta property="og:url" content={canonical || siteUrl} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image.startsWith("http") ? image : `${siteUrl}${image}`} />
+<link rel="canonical" href={canonical || siteUrl} />
+
+{noIndex && <meta name="robots" content="noindex, nofollow" />}
+
+{jsonLd && (
+  <script type="application/ld+json">
+    {JSON.stringify(jsonLd)}
+  </script>
+)}

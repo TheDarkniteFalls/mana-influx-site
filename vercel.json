@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.mparsonsauthor.com"
+        }
+      ],
+      "destination": "https://mparsonsauthor.com/$1",
+      "permanent": true
+    }
+  ]
+}

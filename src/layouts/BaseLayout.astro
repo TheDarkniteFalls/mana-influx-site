@@ -1,0 +1,94 @@
+---
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import SEO from "../components/SEO.astro";
+import { loadAuthor } from "../utils/content";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  noIndex?: boolean;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const { title, description, image, noIndex, jsonLd } = Astro.props as Props;
+const author = await loadAuthor();
+const gaId = import.meta.env.GA_MEASUREMENT_ID;
+const siteUrl = Astro.site?.href ?? "https://mparsonsauthor.com";
+
+const socialLinks = author
+  ? Object.entries(author.socials)
+      .filter(([, value]) => Boolean(value))
+      .map(([key, value]) => ({
+        label: key.replace(/([A-Z])/g, " $1").replace(/\b\w/g, (c) => c.toUpperCase()),
+        href: value as string,
+      }))
+  : [];
+
+const baseJsonLd = author
+  ? [
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: author.name,
+        alternateName: author.penName,
+        email: author.email,
+        sameAs: Object.values(author.socials).filter(Boolean),
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        name: "Mike Parsons | Mana Influx",
+        url: siteUrl,
+        potentialAction: {
+          "@type": "SearchAction",
+          target: `${siteUrl}/search?q={query}`,
+          "query-input": "required name=query",
+        },
+      },
+    ]
+  : [];
+
+const mergedJsonLd = jsonLd
+  ? Array.isArray(jsonLd)
+    ? [...baseJsonLd, ...jsonLd]
+    : [...baseJsonLd, jsonLd]
+  : baseJsonLd;
+---
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@400;700&display=swap"
+    />
+    <SEO title={title} description={description} image={image} noIndex={noIndex} jsonLd={mergedJsonLd} />
+    {gaId && (
+      <>
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+        <script is:inline>
+          const GA_ID = ${JSON.stringify(gaId)};
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', GA_ID);
+        </script>
+      </>
+    )}
+  </head>
+  <body class="min-h-screen bg-slate-100 text-slate-900 transition dark:bg-slate-950 dark:text-slate-50">
+    <Header />
+    <main class="relative mx-auto flex min-h-[calc(100vh-160px)] w-full max-w-6xl flex-col gap-10 px-4 py-10 sm:px-6 lg:px-8">
+      <slot />
+    </main>
+    <Footer email={author?.email} socials={socialLinks} />
+  </body>
+</html>

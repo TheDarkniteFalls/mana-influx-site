@@ -1,0 +1,64 @@
+---
+import NewsletterForm from "../../components/NewsletterForm.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { loadAuthor } from "../../utils/content";
+import { formatDate } from "../../utils/format";
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("updates");
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props as { post: CollectionEntry<"updates"> };
+const author = await loadAuthor();
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: post.data.title,
+  datePublished: post.data.date.toISOString(),
+  author: author
+    ? {
+        "@type": "Person",
+        name: author.name,
+        alternateName: author.penName,
+      }
+    : undefined,
+  url: Astro.url?.toString(),
+};
+---
+
+<BaseLayout title={post.data.title} description={post.data.excerpt} jsonLd={jsonLd}>
+  <article class="mx-auto flex w-full max-w-3xl flex-col gap-6">
+    <header class="space-y-3">
+      <p class="text-xs font-semibold uppercase tracking-wide text-emerald-500">
+        {formatDate(post.data.date)}
+      </p>
+      <h1 class="text-3xl font-serif font-semibold text-slate-900 dark:text-slate-100">
+        {post.data.title}
+      </h1>
+      {post.data.tags?.length && (
+        <div class="flex flex-wrap gap-2 text-xs">
+          {post.data.tags.map((tag) => (
+            <span class="inline-flex items-center rounded-full border border-slate-900/10 px-3 py-1 font-semibold uppercase tracking-wide text-slate-500 dark:border-slate-100/20 dark:text-slate-300">
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+    </header>
+    <div class="prose prose-slate max-w-none dark:prose-invert" set:html={post.body} />
+  </article>
+
+  <section class="mx-auto mt-12 w-full max-w-3xl">
+    <NewsletterForm
+      heading="Never miss an update"
+      description="Newsletter subscribers get the latest release notes and Royal Road updates directly in their inbox."
+    />
+  </section>
+</BaseLayout>

@@ -1,0 +1,53 @@
+
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Privacy Policy" noIndex>
+  <article class="mx-auto flex w-full max-w-3xl flex-col gap-6">
+    <h1 class="text-3xl font-serif font-semibold text-slate-900 dark:text-slate-100">Privacy Policy</h1>
+    <p class="text-sm text-slate-600 dark:text-slate-300">
+      Last updated: {new Date().toLocaleDateString("en-US")}
+    </p>
+    <section class="space-y-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+      <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">Overview</h2>
+      <p>
+        This website is operated by Mike Parsons (“we”, “our”, or “us”). We respect your privacy and only collect the minimum information required to deliver newsletters, respond to contact requests, and improve the site’s performance.
+      </p>
+    </section>
+    <section class="space-y-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+      <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">Information we collect</h2>
+      <ul class="list-disc space-y-2 pl-6">
+        <li>
+          <strong>Newsletter signup:</strong> When you subscribe, ConvertKit captures your email address and IP-based geolocation for compliance (GDPR/CAN-SPAM). We do not share this list outside of ConvertKit.
+        </li>
+        <li>
+          <strong>Contact form:</strong> Messages submitted through the Formspree form include your name, email, topic, and message content. Formspree stores submissions so we can reply.
+        </li>
+        <li>
+          <strong>Analytics (optional):</strong> If Google Analytics is enabled, anonymised usage data (page views, referrers, device type) is collected to understand site performance. No personally identifying information is stored.
+        </li>
+      </ul>
+    </section>
+    <section class="space-y-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+      <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">How we use your information</h2>
+      <ul class="list-disc space-y-2 pl-6">
+        <li>Send newsletters, release announcements, and bonus materials.</li>
+        <li>Respond to direct enquiries and collaboration requests.</li>
+        <li>Monitor aggregate traffic to identify technical issues.</li>
+      </ul>
+    </section>
+    <section class="space-y-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+      <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">Data retention</h2>
+      <p>
+        Newsletter data remains in ConvertKit until you unsubscribe or request deletion. Contact form submissions are retained for up to 12 months for follow-up purposes. Analytics data (if enabled) follows Google’s standard retention policies.
+      </p>
+    </section>
+    <section class="space-y-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+      <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">Your rights</h2>
+      <p>
+        You may unsubscribe at any time using the link at the bottom of each newsletter, or contact us at <a class="text-emerald-600" href="mailto:contact@mparsonsauthor.com">contact@mparsonsauthor.com</a> to request data removal.
+      </p>
+    </section>
+  </article>
+</BaseLayout>

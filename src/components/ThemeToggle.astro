@@ -1,0 +1,67 @@
+<button
+  id="theme-toggle"
+  class="inline-flex items-center justify-center rounded-full border border-slate-900/10 bg-white/70 px-3 py-2 text-sm font-medium text-slate-900 shadow-sm transition hover:bg-emerald-100 hover:text-emerald-700 dark:border-slate-100/10 dark:bg-slate-800/80 dark:text-slate-100 dark:hover:bg-emerald-500/20 dark:hover:text-emerald-200"
+  type="button"
+  aria-label="Toggle theme"
+>
+  <span class="sr-only">Toggle theme</span>
+  <svg
+    class="h-5 w-5 theme-toggle-sun"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.5"
+  >
+    <circle cx="12" cy="12" r="4" />
+    <path d="M12 2v2m0 16v2m10-10h-2M4 12H2m16.95 6.95-1.41-1.41M6.46 6.46 5.05 5.05m13.9 0-1.41 1.41M6.46 17.54l-1.41 1.41" />
+  </svg>
+  <svg
+    class="h-5 w-5 theme-toggle-moon hidden"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.5"
+  >
+    <path
+      d="M21 12.79A9 9 0 0 1 11.21 3 6.5 6.5 0 1 0 21 12.79z"
+    />
+  </svg>
+</button>
+
+<script is:inline>
+  const storageKey = "mana-influx-theme";
+  const root = document.documentElement;
+  const toggleButton = document.getElementById("theme-toggle");
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+
+  const updateIcon = () => {
+    const isDark = root.classList.contains("dark");
+    toggleButton?.querySelector(".theme-toggle-sun")?.classList.toggle("hidden", isDark);
+    toggleButton?.querySelector(".theme-toggle-moon")?.classList.toggle("hidden", !isDark);
+  };
+
+  const applyTheme = (dark: boolean) => {
+    root.classList.toggle("dark", dark);
+    document.body.classList.toggle("dark", dark);
+    localStorage.setItem(storageKey, dark ? "dark" : "light");
+    updateIcon();
+  };
+
+  const savedTheme = localStorage.getItem(storageKey);
+  if (savedTheme === "dark" || (!savedTheme && prefersDark.matches)) {
+    applyTheme(true);
+  } else {
+    applyTheme(false);
+  }
+
+  toggleButton?.addEventListener("click", () => {
+    const isDark = root.classList.contains("dark");
+    applyTheme(!isDark);
+  });
+
+  prefersDark.addEventListener("change", (event) => {
+    if (!localStorage.getItem(storageKey)) {
+      applyTheme(event.matches);
+    }
+  });
+</script>

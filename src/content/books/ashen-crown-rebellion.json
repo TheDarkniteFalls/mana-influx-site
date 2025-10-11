@@ -1,0 +1,15 @@
+{
+  "series": "mana-influx",
+  "seriesOrder": 4,
+  "title": "Ashen Crown Rebellion",
+  "subtitle": "Mana Influx Book Four (Placeholder)",
+  "blurb": "Placeholder entry for the fourth Mana Influx novel. Fill in the blurb, metadata, and purchase links once the details are finalized.",
+  "amazonUrl": null,
+  "kindleUnlimited": true,
+  "formats": [
+    "ebook"
+  ],
+  "cover": "/images/books/placeholder.svg",
+  "contentWarnings": [],
+  "reviews": []
+}

@@ -1,0 +1,22 @@
+{
+  "title": "Mana Influx",
+  "tagline": "Progression fantasy forged by a world-shattering surge of mana.",
+  "description": "The Mana Influx transformed Earth overnight, turning cities into dungeons and survivors into class-bearing adventurers. Bronwic, a retired logistics specialist with a penchant for storytelling, becomes an unlikely hero when he embraces the system and harnesses the mana storms. The series blends crunchy LitRPG mechanics, heartfelt camaraderie, and high-octane battles across an evolving post-apocalyptic landscape.",
+  "readingOrder": [
+    "tall-tales-of-bronwic",
+    "stormbound-wardens",
+    "siege-of-skyglass",
+    "ashen-crown-rebellion",
+    "dark-mana-knight"
+  ],
+  "featured": "dark-mana-knight",
+  "highlights": [
+    "Post-apocalyptic LitRPG progression with meaningful character arcs.",
+    "Crunchy system sheets, unique mana evolutions, and creative builds.",
+    "Found family energy centered on Bronwic’s irreverent storytelling."
+  ],
+  "cta": {
+    "label": "Start with Tall Tales of Bronwic",
+    "href": "https://www.amazon.com/Tall-Tales-Bronwic-Apocalyptic-LITRPG-ebook/dp/B0CRGMY84V"
+  }
+}

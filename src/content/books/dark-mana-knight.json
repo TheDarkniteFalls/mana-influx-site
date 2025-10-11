@@ -1,0 +1,23 @@
+{
+  "series": "mana-influx",
+  "seriesOrder": 5,
+  "title": "Dark Mana Knight",
+  "subtitle": "Mana Influx Book Five",
+  "blurb": "The fifth Mana Influx novel escalates Bronwic’s battle against corrupted mana as new threats emerge from the Tuuvok infection. With power comes impossible choices, and Bronwic must decide how far he is willing to bend the rules of the system to save the people he loves.",
+  "releaseDate": "2024-08-01",
+  "asin": "B0FDQTLJ58",
+  "amazonUrl": "https://www.amazon.com/dp/B0FDQTLJ58",
+  "kindleUnlimited": true,
+  "formats": [
+    "ebook"
+  ],
+  "goodreadsUrl": null,
+  "audibleUrl": null,
+  "cover": "/images/books/placeholder.svg",
+  "excerptUrl": null,
+  "contentWarnings": [
+    "Intense combat",
+    "Body horror elements"
+  ],
+  "reviews": []
+}

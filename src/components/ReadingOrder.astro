@@ -1,0 +1,78 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  title?: string;
+  books: CollectionEntry<"books">[];
+  order?: string[];
+}
+
+const { title = "Reading order", books, order } = Astro.props;
+const bookMap = new Map(books.map((entry) => [entry.slug, entry]));
+const orderedBooks = order
+  ? order
+      .map((slug) => bookMap.get(slug))
+      .filter((item): item is CollectionEntry<"books"> => Boolean(item))
+  : books;
+---
+
+<section class="space-y-4">
+  <div class="flex items-center justify-between">
+    <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100">{title}</h2>
+    <span class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+      {orderedBooks.length} books
+    </span>
+  </div>
+  <ol class="space-y-4">
+    {orderedBooks.map((book, index) => (
+      <li class="flex flex-col gap-3 rounded-2xl border border-slate-900/10 bg-white/80 p-4 shadow-sm dark:border-slate-100/10 dark:bg-slate-900/50">
+        <div class="flex items-start gap-3">
+          <span class="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500 text-sm font-semibold text-white shadow-sm">
+            {index + 1}
+          </span>
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-wide text-emerald-500">
+              {book.data.seriesOrder ? `Book ${book.data.seriesOrder}` : "Side Story"}
+            </p>
+            <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100">{book.data.title}</h3>
+            {book.data.subtitle && (
+              <p class="text-sm text-slate-600 dark:text-slate-300">{book.data.subtitle}</p>
+            )}
+          </div>
+        </div>
+        <p class="text-sm text-slate-600 dark:text-slate-300">
+          {book.data.blurb.length > 240 ? `${book.data.blurb.slice(0, 237)}…` : book.data.blurb}
+        </p>
+        <div class="flex flex-wrap gap-2 text-xs text-slate-500 dark:text-slate-400">
+          {book.data.formats.map((format) => (
+            <span class="rounded-full bg-emerald-500/10 px-3 py-1 font-medium text-emerald-600 dark:text-emerald-200">
+              {format.toUpperCase()}
+            </span>
+          ))}
+          {book.data.kindleUnlimited && (
+            <span class="rounded-full bg-emerald-500/10 px-3 py-1 font-semibold text-emerald-600 dark:text-emerald-200">
+              Kindle Unlimited
+            </span>
+          )}
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a
+            href={`/book/${book.slug}`}
+            class="inline-flex items-center rounded-full border border-slate-900/10 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-emerald-400 hover:text-emerald-600 dark:border-slate-100/20 dark:text-slate-200"
+          >
+            View details
+          </a>
+          {book.data.amazonUrl && (
+            <a
+              href={book.data.amazonUrl}
+              class="inline-flex items-center rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-400"
+              rel="noopener noreferrer"
+            >
+              Amazon page
+            </a>
+          )}
+        </div>
+      </li>
+    ))}
+  </ol>
+</section>

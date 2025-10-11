@@ -1,0 +1,42 @@
+
+---
+import NewsletterForm from "../components/NewsletterForm.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { loadAuthor } from "../utils/content";
+
+const author = await loadAuthor();
+const subscribed = Astro.url.searchParams.get("subscribed") === "1";
+---
+
+<BaseLayout title="Newsletter">
+  <section class="mx-auto flex w-full max-w-3xl flex-col gap-8 text-center">
+    <h1 class="text-4xl font-serif font-semibold text-slate-900 dark:text-slate-100">
+      Join the Mana Influx newsletter
+    </h1>
+    {subscribed ? (
+      <div class="rounded-3xl border border-emerald-500/30 bg-emerald-500/10 p-6 text-emerald-700 dark:border-emerald-400/30 dark:bg-emerald-500/20 dark:text-emerald-100">
+        <p class="text-lg font-semibold">Thanks for subscribing!</p>
+        <p class="mt-2 text-sm">
+          Check your inbox for a confirmation email. Add <strong>{author?.email ?? "contact@mparsonsauthor.com"}</strong> to your contacts to ensure release-day updates land safely.
+        </p>
+      </div>
+    ) : (
+      <p class="text-lg leading-relaxed text-slate-700 dark:text-slate-300">
+        Progress reports, release-day reminders, and behind-the-scenes notes as Bronwic’s story evolves. Expect one email per week during launch windows and a monthly round-up between arcs.
+      </p>
+    )}
+    <NewsletterForm
+      heading="Subscribe for LitRPG updates"
+      description="Exclusive previews, bonus snippets, and Kindle Unlimited announcements."
+      successRedirect="/newsletter?subscribed=1"
+    />
+    <div class="space-y-4 text-left text-sm text-slate-600 dark:text-slate-300">
+      <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">What you’ll receive</h2>
+      <ul class="list-disc space-y-2 pl-6">
+        <li>Royal Road chapter alerts with quick synopsis and stub context.</li>
+        <li>Kindle Unlimited and paperback release-week schedules.</li>
+        <li>Optional ARC sign-ups and audiobook casting news.</li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

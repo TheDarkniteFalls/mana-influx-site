@@ -1,0 +1,74 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { applyAmazonAssociateTag } from "../utils/content";
+
+interface Props {
+  book: CollectionEntry<"books">;
+  size?: "sm" | "md" | "lg";
+}
+
+const { book, size = "md" } = Astro.props;
+const assocTag = import.meta.env.AMAZON_ASSOC_TAG;
+
+const amazonUrl = applyAmazonAssociateTag(book.data.amazonUrl, assocTag);
+const kindleUnlimited = book.data.kindleUnlimited;
+const audibleUrl = book.data.audibleUrl;
+const goodreadsUrl = book.data.goodreadsUrl;
+
+const sizeClasses = {
+  sm: "px-3 py-2 text-sm",
+  md: "px-4 py-3 text-sm",
+  lg: "px-6 py-4 text-base",
+};
+---
+
+<div class="flex flex-wrap gap-3">
+  {amazonUrl && (
+    <a
+      href={amazonUrl}
+      class:list={[
+        "inline-flex items-center rounded-full bg-emerald-500 font-semibold text-white shadow-sm transition hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/70",
+        sizeClasses[size],
+      ]}
+      rel="noopener noreferrer"
+    >
+      <span>Buy on Amazon</span>
+    </a>
+  )}
+  {kindleUnlimited && amazonUrl && (
+    <a
+      href={amazonUrl}
+      class:list={[
+        "inline-flex items-center rounded-full border border-emerald-400 font-semibold text-emerald-600 transition hover:bg-emerald-500/10 focus:outline-none focus:ring-2 focus:ring-emerald-400/70 dark:text-emerald-200",
+        sizeClasses[size],
+      ]}
+      rel="noopener noreferrer"
+    >
+      <span>Read with Kindle Unlimited</span>
+    </a>
+  )}
+  {audibleUrl && (
+    <a
+      href={audibleUrl}
+      class:list={[
+        "inline-flex items-center rounded-full border border-slate-900/20 font-medium text-slate-700 transition hover:border-emerald-400 hover:text-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-400/70 dark:border-slate-100/20 dark:text-slate-200",
+        sizeClasses[size],
+      ]}
+      rel="noopener noreferrer"
+    >
+      <span>Listen on Audible</span>
+    </a>
+  )}
+  {goodreadsUrl && (
+    <a
+      href={goodreadsUrl}
+      class:list={[
+        "inline-flex items-center rounded-full border border-slate-900/20 font-medium text-slate-700 transition hover:border-emerald-400 hover:text-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-400/70 dark:border-slate-100/20 dark:text-slate-200",
+        sizeClasses[size],
+      ]}
+      rel="noopener noreferrer"
+    >
+      <span>View on Goodreads</span>
+    </a>
+  )}
+</div>

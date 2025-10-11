@@ -1,0 +1,76 @@
+---
+interface Social {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  email?: string;
+  socials: Social[];
+}
+
+const { email, socials } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-slate-900/10 bg-white py-12 text-sm dark:border-slate-100/10 dark:bg-slate-950">
+  <div class="mx-auto grid max-w-6xl gap-10 px-4 sm:grid-cols-2 lg:grid-cols-4 sm:px-6 lg:px-8">
+    <div>
+      <span class="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500 text-lg font-semibold text-white shadow-lg shadow-emerald-500/30">
+        MP
+      </span>
+      <p class="mt-2 text-base font-semibold text-slate-900 dark:text-slate-100">Mike Parsons</p>
+      <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">
+        LitRPG progression fantasy author. Follow the Mana Influx saga across Kindle Unlimited and Royal Road.
+      </p>
+    </div>
+    <div>
+      <p class="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Explore</p>
+      <ul class="mt-3 space-y-2 text-slate-700 dark:text-slate-300">
+        <li><a class="transition hover:text-emerald-500" href="/books">Books</a></li>
+        <li><a class="transition hover:text-emerald-500" href="/books/mana-influx">Mana Influx Series</a></li>
+        <li><a class="transition hover:text-emerald-500" href="/royal-road">Royal Road</a></li>
+        <li><a class="transition hover:text-emerald-500" href="/updates">Updates</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Connect</p>
+      <ul class="mt-3 space-y-2 text-slate-700 dark:text-slate-300">
+        {socials.length
+          ? socials.map((item) => (
+              <li>
+                <a class="transition hover:text-emerald-500" href={item.href} rel="noopener noreferrer">
+                  {item.label}
+                </a>
+              </li>
+            ))
+          : <li>No social links provided yet.</li>}
+      </ul>
+      {email && (
+        <p class="mt-4 text-slate-700 dark:text-slate-300">
+          <a class="transition hover:text-emerald-500" href={`mailto:${email}`}>{email}</a>
+        </p>
+      )}
+    </div>
+    <div>
+      <p class="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Newsletter</p>
+      <p class="mt-3 text-slate-700 dark:text-slate-300">
+        Subscribe for release notes, Royal Road drops, and Kindle Unlimited announcements.
+      </p>
+      <a
+        class="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-4 py-3 text-base font-semibold text-white shadow-sm transition hover:bg-emerald-400"
+        href="/newsletter"
+      >
+        Join the Newsletter
+      </a>
+    </div>
+  </div>
+  <div class="mx-auto mt-10 flex max-w-6xl flex-col gap-3 border-t border-slate-900/10 px-4 pt-6 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8 dark:border-slate-100/10 dark:text-slate-400">
+    <span>© {year} Mike Parsons. All rights reserved.</span>
+    <div class="flex flex-wrap gap-4">
+      <a href="/privacy" class="transition hover:text-emerald-500">Privacy Policy</a>
+      <a href="/terms" class="transition hover:text-emerald-500">Terms</a>
+      <a href="/cookies" class="transition hover:text-emerald-500">Cookies</a>
+    </div>
+  </div>
+</footer>

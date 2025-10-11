@@ -1,0 +1,180 @@
+---
+import BookCTAButtons from "../../components/BookCTAButtons.astro";
+import NewsletterForm from "../../components/NewsletterForm.astro";
+import ReviewQuote from "../../components/ReviewQuote.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { loadAuthor } from "../../utils/content";
+import { formatDate } from "../../utils/format";
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const books = await getCollection("books");
+  const series = await getCollection("series");
+  const seriesMap = Object.fromEntries(series.map((item) => [item.slug, item]));
+
+  return books
+    .filter((book) => typeof book.slug === "string" && book.slug.length > 0)
+    .map((book) => ({
+      params: { slug: book.slug },
+      props: {
+        book,
+        series: seriesMap[book.data.series ?? "mana-influx"] ?? null,
+      },
+    }));
+}
+
+const { book, series } = Astro.props as {
+  book: CollectionEntry<"books">;
+  series: CollectionEntry<"series"> | null;
+};
+
+const author = await loadAuthor();
+
+const amazonUrl = book.data.amazonUrl;
+const releaseDate = book.data.releaseDate ? new Date(book.data.releaseDate) : null;
+const formats = book.data.formats?.length ? book.data.formats : ["ebook"];
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    name: book.data.title,
+    description: book.data.blurb,
+    author: author
+      ? {
+          "@type": "Person",
+          name: author.name,
+          alternateName: author.penName,
+          email: author.email,
+        }
+      : undefined,
+    image: book.data.cover,
+    isbn: book.data.isbn13 ?? book.data.isbn10,
+    url: Astro.url?.toString(),
+    workExample: {
+      "@type": "BookFormatType",
+      bookFormat: formats.map((format) => `https://schema.org/${format}`),
+    },
+    sameAs: [book.data.goodreadsUrl, amazonUrl].filter(Boolean),
+  },
+];
+---
+
+<BaseLayout
+  title={book.data.title}
+  description={book.data.blurb}
+  image={book.data.cover}
+  jsonLd={jsonLd}
+>
+  <section class="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
+    <div class="space-y-6">
+      <p class="text-xs font-semibold uppercase tracking-[0.35em] text-emerald-500">
+        {series?.data.title ?? "Mana Influx"} — LitRPG Progression Fantasy
+      </p>
+      <h1 class="text-4xl font-serif font-semibold text-slate-900 dark:text-slate-100">
+        {book.data.title}
+      </h1>
+      {book.data.subtitle && (
+        <p class="text-lg text-slate-600 dark:text-slate-300">{book.data.subtitle}</p>
+      )}
+      <BookCTAButtons book={book} size="lg" />
+      {book.data.kindleUnlimited && (
+        <p class="inline-flex items-center gap-2 rounded-full bg-emerald-500/15 px-4 py-2 text-sm font-semibold text-emerald-600 dark:text-emerald-300">
+          <span aria-hidden="true">∞</span>
+          Included with Kindle Unlimited
+        </p>
+      )}
+      <div class="space-y-3 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+        {book.data.blurb.split("\n").map((paragraph) => (
+          <p>{paragraph}</p>
+        ))}
+      </div>
+      <div class="rounded-2xl border border-slate-900/10 bg-white/80 p-5 shadow-sm dark:border-slate-100/10 dark:bg-slate-900/60">
+        <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">Book details</h2>
+        <dl class="mt-4 grid gap-4 text-sm text-slate-600 dark:text-slate-300 sm:grid-cols-2">
+          {book.data.seriesOrder && (
+            <div>
+              <dt class="font-semibold text-slate-700 dark:text-slate-200">Series Order</dt>
+              <dd>Book {book.data.seriesOrder}</dd>
+            </div>
+          )}
+          {releaseDate && (
+            <div>
+              <dt class="font-semibold text-slate-700 dark:text-slate-200">Release date</dt>
+              <dd>{formatDate(releaseDate)}</dd>
+            </div>
+          )}
+          {book.data.asin && (
+            <div>
+              <dt class="font-semibold text-slate-700 dark:text-slate-200">ASIN</dt>
+              <dd>{book.data.asin}</dd>
+            </div>
+          )}
+          <div>
+            <dt class="font-semibold text-slate-700 dark:text-slate-200">Formats</dt>
+            <dd class="mt-1 flex flex-wrap gap-2">
+              {formats.map((format) => (
+                <span class="inline-flex items-center rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-200">
+                  {format}
+                </span>
+              ))}
+            </dd>
+          </div>
+          {book.data.contentWarnings?.length ? (
+            <div class="sm:col-span-2">
+              <dt class="font-semibold text-slate-700 dark:text-slate-200">Content notes</dt>
+              <dd class="mt-1 flex flex-wrap gap-2">
+                {book.data.contentWarnings.map((warning) => (
+                  <span class="inline-flex items-center rounded-full border border-slate-900/10 px-3 py-1 text-xs font-medium text-slate-600 dark:border-slate-100/20 dark:text-slate-300">
+                    {warning}
+                  </span>
+                ))}
+              </dd>
+            </div>
+          ) : null}
+        </dl>
+      </div>
+
+      {book.data.reviews?.length ? (
+        <section class="space-y-4">
+          <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100">Reader highlights</h2>
+          <div class="grid gap-4 md:grid-cols-2">
+            {book.data.reviews.map((review) => (
+              <ReviewQuote {...review} />
+            ))}
+          </div>
+        </section>
+      ) : null}
+    </div>
+
+    <aside class="sticky top-28 space-y-6">
+      <div class="overflow-hidden rounded-3xl border border-slate-900/10 bg-white shadow-lg dark:border-slate-100/10 dark:bg-slate-900">
+        <img
+          src={book.data.cover ?? "/images/books/placeholder.svg"}
+          alt={`${book.data.title} cover art`}
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div class="rounded-3xl border border-emerald-500/30 bg-white/80 p-6 shadow-lg shadow-emerald-500/10 dark:border-emerald-400/30 dark:bg-slate-900/70">
+        <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100">Stay in the loop</h3>
+        <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+          Get release notes, Royal Road updates, and KU launch-day emails.
+        </p>
+        <div class="mt-4">
+          <NewsletterForm compact />
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <div class="fixed inset-x-0 bottom-0 z-50 block border-t border-slate-900/10 bg-white/95 px-4 py-3 shadow-[0_-10px_40px_-15px_rgba(15,23,42,0.3)] sm:hidden dark:border-slate-100/10 dark:bg-slate-950/95">
+    <div class="flex items-center justify-between gap-3">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Book</p>
+        <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">{book.data.title}</p>
+      </div>
+      <BookCTAButtons book={book} size="sm" />
+    </div>
+  </div>
+</BaseLayout>

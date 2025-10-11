@@ -1,0 +1,15 @@
+{
+  "series": "mana-influx",
+  "seriesOrder": 3,
+  "title": "Siege of Skyglass",
+  "subtitle": "Mana Influx Book Three (Placeholder)",
+  "blurb": "Placeholder entry for the third Mana Influx novel. Replace with the official synopsis, release details, and retailer links when available.",
+  "amazonUrl": null,
+  "kindleUnlimited": true,
+  "formats": [
+    "ebook"
+  ],
+  "cover": "/images/books/placeholder.svg",
+  "contentWarnings": [],
+  "reviews": []
+}
