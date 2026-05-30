@@ -1,6 +1,17 @@
 # Mana Influx Author Site
 
-Astro + Tailwind project for Mike Parsons (pen name **Kiwi Parsons**) showcasing the Mana Influx LitRPG series, Royal Road serial, newsletter signup, and contact channels. The site is designed for fast static delivery on Vercel with strong accessibility and Kindle Unlimited conversions.
+Exploration/prototype for an author website supporting Mike Parsons, author of The Mana Influx Series and Soul Spark Reclaimer.
+
+This repository is public as a portfolio and development artifact. It is not currently a reusable website template, and the fiction-related material in this repository is not open-licensed for reuse.
+
+## Rights And Licensing
+
+Unless a separate license file says otherwise:
+
+- Website code may be adapted only under the license terms provided in this repository.
+- Prose, series names, fictional setting material, book metadata, images, branding, and other creative content remain copyright Mike Parsons and are not licensed for reuse.
+
+If this project becomes a reusable template later, the code and creative-content licenses should be separated explicitly.
 
 ## Quick Start
 
@@ -36,9 +47,9 @@ scripts/
 
 Key routes include:
 
-- `/` – hero, featured book, newsletter CTA, Royal Road promo, recent updates
-- `/books` and `/books/mana-influx` – grid view and reading order
-- `/book/[slug]` – individual book pages with sticky mobile buy bar
+- `/` - hero, featured book, newsletter CTA, Royal Road promo, recent updates
+- `/books` and `/books/mana-influx` - grid view and reading order
+- `/book/[slug]` - individual book pages with sticky mobile buy bar
 - `/royal-road`, `/about`, `/updates`, `/newsletter`, `/contact`
 - Legal/supporting pages: `/privacy`, `/terms`, `/cookies`, `/sitemap.xml`, `/robots.txt`
 
@@ -76,8 +87,8 @@ When unset, the newsletter/contact forms use placeholders and GA code remains di
 3. Add the environment variables above in the Vercel dashboard.
 4. After the first deploy, assign the custom domain `mparsonsauthor.com`.
 5. Configure DNS (Google Domains / Workspace):
-   - `mparsonsauthor.com` → A record `76.76.21.21`
-   - `www` → CNAME `cname.vercel-dns.com`
+   - `mparsonsauthor.com` -> A record `76.76.21.21`
+   - `www` -> CNAME `cname.vercel-dns.com`
 6. The included `vercel.json` redirects `www` to the apex domain.
 
 The project builds to static HTML/JS/CSS (`dist/`) so Vercel can serve it directly without a Node runtime.
@@ -85,7 +96,7 @@ The project builds to static HTML/JS/CSS (`dist/`) so Vercel can serve it direct
 ## Quality Targets
 
 - `npm run build` validates content schemas and generates the static site.
-- Lighthouse goal: ≥90 across Performance, SEO, Accessibility, Best Practices once production assets are in place.
+- Lighthouse goal: >=90 across Performance, SEO, Accessibility, Best Practices once production assets are in place.
 - Tailwind typography plugin powers prose styling; review fetch-script output for formatting after large ingests.
 
 ## Next Steps
@@ -93,6 +104,4 @@ The project builds to static HTML/JS/CSS (`dist/`) so Vercel can serve it direct
 - Replace placeholder covers via `npm run fetch` or manual uploads in `public/images/books`.
 - Fill in Amazon/Goodreads/Audible links for placeholder book entries when available.
 - Configure `PUBLIC_CONVERTKIT_FORM_ID` and `PUBLIC_FORMSPREE_ENDPOINT` before launch.
-- Enable `GA_MEASUREMENT_ID` (and add a banner if required) when analytics are desired.
-
-Happy writing—and enjoy growing the Mana Influx reader base!
+- Enable `GA_MEASUREMENT_ID` and add a banner if required when analytics are desired.
